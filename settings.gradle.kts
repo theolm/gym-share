@@ -12,6 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "base-compose-app"
+rootProject.name = "GymShare"
 include(":app")
 include(":color")

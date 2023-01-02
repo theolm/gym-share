@@ -1,7 +1,8 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("org.jetbrains.kotlin.android")
+    id(Plugins.androidApplication)
+    id(Plugins.kotlinAndroid)
+    kotlin(Plugins.kapt)
+    id(Plugins.hilt)
 }
 
 android {
@@ -77,6 +78,9 @@ dependencies {
     implementation(Deps.composeMaterial3)
     implementation(Deps.composeWindowSizeClass)
     implementation(Deps.composeRuntime)
+    implementation(Deps.composeNavigation)
+    implementation(Deps.hiltAndroid)
+    kapt(Deps.hiltCompiler)
 
     implementation(Deps.composeUiToolingPreview)
     debugImplementation(Deps.composeUiTooling)

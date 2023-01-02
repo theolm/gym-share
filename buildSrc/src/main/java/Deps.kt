@@ -18,6 +18,10 @@ object Deps {
     val composeMaterial3 by lazy { "androidx.compose.material3:material3:${Versions.androidxComposeMaterial3}" }
     val composeWindowSizeClass by lazy { "androidx.compose.material3:material3-window-size-class:${Versions.androidxComposeMaterial3}" }
     val composeRuntime by lazy { "androidx.compose.runtime:runtime" }
+    val composeNavigation by lazy { "androidx.navigation:navigation-compose:${Versions.androidxComposeMaterial3}" }
+    val hiltAndroid by lazy { "com.google.dagger:hilt-android:${Versions.hilt}" }
+    val hiltCompiler by lazy { "com.google.dagger:hilt-android-compiler:${Versions.hilt}" }
+
     val composeUiTest by lazy { "androidx.compose.ui:ui-test-junit4" }
     val composeUiTooling by lazy { "androidx.compose.ui:ui-tooling" }
     val composeUiToolingPreview by lazy { "androidx.compose.ui:ui-tooling-preview" }
