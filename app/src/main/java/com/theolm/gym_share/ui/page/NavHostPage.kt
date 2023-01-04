@@ -11,6 +11,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.theolm.gym_share.ui.common.Route
 import com.theolm.gym_share.ui.common.animatedComposable
+import com.theolm.gym_share.ui.page.addWorkout.AddWorkoutPage
 import com.theolm.gym_share.ui.page.home.HomePage
 
 @Composable
@@ -27,9 +28,13 @@ fun NavHostPage() {
             animatedComposable(Route.HOME) {
                 HomePage(
                     onAddClick = {
-                        //
+                        navController.navigate(Route.ADD_WORKOUT)
                     }
                 )
+            }
+
+            animatedComposable(Route.ADD_WORKOUT) {
+                AddWorkoutPage()
             }
         }
     }
