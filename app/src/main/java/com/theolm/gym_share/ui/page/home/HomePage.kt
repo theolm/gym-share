@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.database.WorkoutPlan
+import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.components.DefTopBarAction
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
@@ -24,7 +25,9 @@ import com.theolm.gym_share.ui.theme.PreviewThemeLight
 @Composable
 private fun PreviewLight() {
     PreviewThemeLight {
-        HomePage()
+        HomePage(
+            viewModel = HomePageViewModel(MockWorkoutPlanRepo())
+        )
     }
 }
 
@@ -32,7 +35,9 @@ private fun PreviewLight() {
 @Composable
 private fun PreviewDark() {
     PreviewThemeDark {
-        HomePage()
+        HomePage(
+            viewModel = HomePageViewModel(MockWorkoutPlanRepo())
+        )
     }
 }
 

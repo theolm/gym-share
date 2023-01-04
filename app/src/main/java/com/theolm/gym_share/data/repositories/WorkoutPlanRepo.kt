@@ -4,6 +4,7 @@ import com.theolm.gym_share.data.database.WorkoutPlan
 import com.theolm.gym_share.data.database.WorkoutPlanDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -26,5 +27,10 @@ class WorkoutPlanRepoImpl @Inject constructor(
         return workoutPlanDao.getAll()
     }
 
+}
+
+class MockWorkoutPlanRepo : WorkoutPlanRepo {
+    override suspend fun save(workoutPlan: WorkoutPlan) = Unit
+    override fun getAll(): Flow<List<WorkoutPlan>> = flow { emptyList<WorkoutPlan>() }
 }
 

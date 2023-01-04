@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.theolm.gym_share.R
+import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.extensions.toAlphabetLetter
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
@@ -42,7 +43,10 @@ import kotlinx.coroutines.launch
 @Composable
 private fun PreviewLight() {
     PreviewThemeLight {
-        AddWorkoutPage(navController = rememberAnimatedNavController())
+        AddWorkoutPage(
+            viewModel = AddWorkoutViewModel(MockWorkoutPlanRepo()),
+            navController = rememberAnimatedNavController()
+        )
     }
 }
 
@@ -50,7 +54,10 @@ private fun PreviewLight() {
 @Composable
 private fun PreviewDark() {
     PreviewThemeDark {
-        AddWorkoutPage(navController = rememberAnimatedNavController())
+        AddWorkoutPage(
+            viewModel = AddWorkoutViewModel(MockWorkoutPlanRepo()),
+            navController = rememberAnimatedNavController()
+        )
     }
 }
 
