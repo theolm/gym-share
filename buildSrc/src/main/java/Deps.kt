@@ -21,6 +21,7 @@ object Deps {
     val composeNavigation by lazy { "androidx.navigation:navigation-compose:${Versions.androidxComposeMaterial3}" }
     val hiltAndroid by lazy { "com.google.dagger:hilt-android:${Versions.hilt}" }
     val hiltCompiler by lazy { "com.google.dagger:hilt-android-compiler:${Versions.hilt}" }
+    val hiltNacCompose by lazy { "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavCompose}" }
 
     val composeUiTest by lazy { "androidx.compose.ui:ui-test-junit4" }
     val composeUiTooling by lazy { "androidx.compose.ui:ui-tooling" }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Gym Share</string>
+    <string name="add_workout_plan_page_title">Creating Workout Plan</string>
+    <string name="workout_title">Title</string>
 </resources>

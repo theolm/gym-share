@@ -12,8 +12,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.theolm.gym_share.R
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.components.DefTopBarAction
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
@@ -50,7 +52,7 @@ fun HomePage(
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             DefTopBar(
-                title = "Gym Share",
+                title = stringResource(id = R.string.app_name),
                 scrollBehavior = scrollBehavior,
                 actions = listOf(
                     DefTopBarAction(

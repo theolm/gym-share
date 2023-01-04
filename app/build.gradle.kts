@@ -80,6 +80,7 @@ dependencies {
     implementation(Deps.composeRuntime)
     implementation(Deps.composeNavigation)
     implementation(Deps.hiltAndroid)
+    implementation(Deps.hiltNacCompose)
     kapt(Deps.hiltCompiler)
 
     implementation(Deps.composeUiToolingPreview)
