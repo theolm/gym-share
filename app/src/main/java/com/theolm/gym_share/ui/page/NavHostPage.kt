@@ -34,7 +34,11 @@ fun NavHostPage() {
             }
 
             animatedComposable(Route.ADD_WORKOUT) {
-                AddWorkoutPage()
+                AddWorkoutPage(
+                    onBackPress = {
+                        navController.popBackStack()
+                    }
+                )
             }
         }
     }

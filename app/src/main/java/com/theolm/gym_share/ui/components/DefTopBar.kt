@@ -2,6 +2,8 @@
 
 package com.theolm.gym_share.ui.components
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,19 +39,29 @@ private fun PreviewDark() {
 fun DefTopBar(
     title: String,
     actions: List<DefTopBarAction> = listOf(),
-    scrollBehavior : TopAppBarScrollBehavior
+    onBackPress: (() -> Unit)? = null,
+    scrollBehavior: TopAppBarScrollBehavior,
 ) {
     LargeTopAppBar(
         modifier = Modifier,
         title = {
             Text(text = title)
         },
+        navigationIcon = {
+            onBackPress?.let {
+                IconButton(onClick = it,) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        contentDescription = null
+                    )
+                }
+            }
+        },
         scrollBehavior = scrollBehavior,
         actions = {
             actions.forEach { icon ->
-                IconButton(
-                    onClick = icon.onClick,
-                ) {
+                IconButton(onClick = icon.onClick) {
                     androidx.compose.material.Icon(
                         imageVector = icon.icon,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -63,6 +75,6 @@ fun DefTopBar(
 
 data class DefTopBarAction(
     val icon: ImageVector,
-    val onClick : () -> Unit,
+    val onClick: () -> Unit,
     val contentDescription: String? = null
 )

@@ -39,7 +39,7 @@ private fun PreviewDark() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(
-    onAddClick : () -> Unit = {}
+    onAddClick: () -> Unit = {}
 ) {
     //TODO: fix topbar animation
     val topAppBarState = rememberTopAppBarState()
@@ -63,7 +63,10 @@ fun HomePage(
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(horizontal = 24.dp, vertical = paddingValues.calculateTopPadding())
+            contentPadding = PaddingValues(
+                horizontal = 24.dp,
+                vertical = paddingValues.calculateTopPadding()
+            )
         ) {
             items(100) {
                 Text(text = "item $it")
