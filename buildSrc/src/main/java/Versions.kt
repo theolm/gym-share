@@ -14,5 +14,6 @@ object Versions {
     const val composeNavigation = "2.5.3"
     const val hilt = "2.44"
     const val hiltNavCompose = "1.0.0"
+    const val room = "2.4.1"
 
 }

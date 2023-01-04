@@ -83,6 +83,10 @@ dependencies {
     implementation(Deps.hiltNacCompose)
     kapt(Deps.hiltCompiler)
 
+    implementation(Deps.roomRuntime)
+    implementation(Deps.roomKtx)
+    kapt(Deps.roomCompiler)
+
     implementation(Deps.composeUiToolingPreview)
     debugImplementation(Deps.composeUiTooling)
 
