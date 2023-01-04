@@ -1,6 +1,5 @@
 package com.theolm.gym_share.ui.page.home
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -37,16 +36,15 @@ private fun PreviewDark() {
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(
     viewModel: HomePageViewModel = hiltViewModel(),
     onAddClick: () -> Unit = {}
 ) {
-    //TODO: fix topbar animation
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()

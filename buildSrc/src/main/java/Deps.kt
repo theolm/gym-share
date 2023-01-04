@@ -19,6 +19,7 @@ object Deps {
     val composeWindowSizeClass by lazy { "androidx.compose.material3:material3-window-size-class:${Versions.androidxComposeMaterial3}" }
     val composeRuntime by lazy { "androidx.compose.runtime:runtime" }
     val composeNavigation by lazy { "androidx.navigation:navigation-compose:${Versions.androidxComposeMaterial3}" }
+    val composeLiveData by lazy { "androidx.compose.runtime:runtime-livedata:${Versions.composeLiveData}" }
     val hiltAndroid by lazy { "com.google.dagger:hilt-android:${Versions.hilt}" }
     val hiltCompiler by lazy { "com.google.dagger:hilt-android-compiler:${Versions.hilt}" }
     val hiltNacCompose by lazy { "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavCompose}" }

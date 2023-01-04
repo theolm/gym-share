@@ -11,6 +11,7 @@ object Versions {
     const val accompanist = "0.28.0"
     const val androidxComposeBom = "2022.12.00"
     const val androidxComposeMaterial3 = "1.1.0-alpha03"
+    const val composeLiveData = "1.3.2"
     const val composeNavigation = "2.5.3"
     const val hilt = "2.44"
     const val hiltNavCompose = "1.0.0"

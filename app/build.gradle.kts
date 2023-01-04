@@ -79,6 +79,7 @@ dependencies {
     implementation(Deps.composeWindowSizeClass)
     implementation(Deps.composeRuntime)
     implementation(Deps.composeNavigation)
+    implementation(Deps.composeLiveData)
     implementation(Deps.hiltAndroid)
     implementation(Deps.hiltNacCompose)
     kapt(Deps.hiltCompiler)

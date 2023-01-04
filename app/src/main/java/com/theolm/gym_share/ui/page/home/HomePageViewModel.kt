@@ -22,10 +22,11 @@ class HomePageViewModel @Inject constructor(
         loadWorkoutList()
     }
 
-    fun loadWorkoutList() {
+    private fun loadWorkoutList() {
         viewModelScope.launch(Dispatchers.Main) {
-            workoutList = workoutPlanRepo.getAll()
-            println("aeesa")
+            workoutPlanRepo.getAll().collect {
+                workoutList = it
+            }
         }
     }
 
