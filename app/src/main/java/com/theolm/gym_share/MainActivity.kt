@@ -3,6 +3,8 @@ package com.theolm.gym_share
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import com.theolm.gym_share.ui.page.NavHostPage
 import com.theolm.gym_share.ui.theme.GymShareTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -11,6 +13,12 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { v, insets ->
+            v.setPadding(0, 0, 0, 0)
+            insets
+        }
+
         setContent {
             GymShareTheme {
                 NavHostPage()

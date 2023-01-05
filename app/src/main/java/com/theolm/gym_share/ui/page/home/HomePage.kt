@@ -18,6 +18,7 @@ import com.theolm.gym_share.data.database.WorkoutPlan
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.components.DefTopBarAction
+import com.theolm.gym_share.ui.page.home.components.WorkoutCard
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
 
@@ -91,16 +92,20 @@ private fun NoWorkoutYet() {
 
 @Composable
 private fun WorkoutList(list: List<WorkoutPlan>, paddingValues: PaddingValues) {
+    val topPadding = paddingValues.calculateTopPadding()
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
-            horizontal = 24.dp,
-            vertical = paddingValues.calculateTopPadding()
+            start = 16.dp,
+            end = 16.dp,
+            top = topPadding + 32.dp,
+            bottom = 32.dp
         )
     ) {
         items(list.size) { pos ->
             val workout = list[pos]
-            Text(text = "item ${workout.title}")
+
+            WorkoutCard(title = workout.title)
             Spacer(modifier = Modifier.height(8.dp))
         }
     }

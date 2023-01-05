@@ -69,6 +69,7 @@ fun AddWorkoutPage(
     val scope = rememberCoroutineScope()
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -95,19 +96,21 @@ fun AddWorkoutPage(
                 },
                 onClick = {
                     scope.launch {
-                        viewModel.saveWorkoutPlan()
-                        navController.popBackStack()
+                        if (viewModel.saveWorkoutPlan()) {
+                            navController.popBackStack()
+                        }
                     }
                 }
             )
         },
-        floatingActionButtonPosition = FabPosition.End
+        floatingActionButtonPosition = FabPosition.End,
+        snackbarHost = { SnackbarHost(viewModel.snackBarHostState) }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
                 horizontal = 16.dp,
-                vertical = paddingValues.calculateTopPadding()
+                vertical = paddingValues.calculateTopPadding() + 16.dp
             )
         ) {
             item {
@@ -158,6 +161,21 @@ fun AddWorkoutPage(
             }
         }
     }
+
+//    LaunchedEffect(viewModel.errorState) {
+//        viewModel.errorState?.let {
+//            snackbarHostState.showSnackbar(
+//                message = it,
+//                duration = SnackbarDuration.Short,
+//                withDismissAction = false
+//            )
+//        }
+//    }
+}
+
+@Composable
+private fun SnackbarHandler() {
+
 }
 
 @Composable
@@ -200,4 +218,5 @@ private fun WorkoutSetRow(viewModel: AddWorkoutViewModel, pos: Int) {
         }
     }
 }
+
 
