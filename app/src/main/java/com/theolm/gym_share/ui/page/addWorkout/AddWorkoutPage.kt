@@ -1,7 +1,7 @@
 @file:OptIn(
     ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
     ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class,
-    ExperimentalAnimationApi::class
+    ExperimentalAnimationApi::class, ExperimentalAnimationApi::class
 )
 
 package com.theolm.gym_share.ui.page.addWorkout
@@ -34,6 +34,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.extensions.toAlphabetLetter
+import com.theolm.gym_share.ui.common.MockErrorHandler
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
@@ -44,7 +45,10 @@ import kotlinx.coroutines.launch
 private fun PreviewLight() {
     PreviewThemeLight {
         AddWorkoutPage(
-            viewModel = AddWorkoutViewModel(MockWorkoutPlanRepo()),
+            viewModel = AddWorkoutViewModel(
+                MockWorkoutPlanRepo(),
+                MockErrorHandler()
+            ),
             navController = rememberAnimatedNavController()
         )
     }
@@ -55,7 +59,10 @@ private fun PreviewLight() {
 private fun PreviewDark() {
     PreviewThemeDark {
         AddWorkoutPage(
-            viewModel = AddWorkoutViewModel(MockWorkoutPlanRepo()),
+            viewModel = AddWorkoutViewModel(
+                MockWorkoutPlanRepo(),
+                MockErrorHandler()
+            ),
             navController = rememberAnimatedNavController()
         )
     }
@@ -104,7 +111,7 @@ fun AddWorkoutPage(
             )
         },
         floatingActionButtonPosition = FabPosition.End,
-        snackbarHost = { SnackbarHost(viewModel.snackBarHostState) }
+        snackbarHost = { SnackbarHost(viewModel.errorHandler.snackBarHostState) }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -162,20 +169,7 @@ fun AddWorkoutPage(
         }
     }
 
-//    LaunchedEffect(viewModel.errorState) {
-//        viewModel.errorState?.let {
-//            snackbarHostState.showSnackbar(
-//                message = it,
-//                duration = SnackbarDuration.Short,
-//                withDismissAction = false
-//            )
-//        }
-//    }
-}
-
-@Composable
-private fun SnackbarHandler() {
-
+    viewModel.errorHandler.ErrorObserver()
 }
 
 @Composable

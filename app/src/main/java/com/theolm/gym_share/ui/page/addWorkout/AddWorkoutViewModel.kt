@@ -1,21 +1,19 @@
 package com.theolm.gym_share.ui.page.addWorkout
 
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.theolm.gym_share.R
 import com.theolm.gym_share.data.database.WorkoutPlan
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
+import com.theolm.gym_share.ui.common.ErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddWorkoutViewModel @Inject constructor(
-    private val workoutPlanRepo: WorkoutPlanRepo
+    private val workoutPlanRepo: WorkoutPlanRepo,
+    val errorHandler: ErrorHandler
 ) : ViewModel() {
-    val snackBarHostState = SnackbarHostState()
     var titleState by mutableStateOf("")
     val setList = mutableStateListOf<MutableState<String>>()
 
@@ -28,29 +26,30 @@ class AddWorkoutViewModel @Inject constructor(
     }
 
     suspend fun saveWorkoutPlan(): Boolean {
+        return if (hasInputErrors()) {
+            false
+        } else {
+            workoutPlanRepo.save(WorkoutPlan(title = titleState))
+            true
+        }
+    }
+
+    /**
+     * Checks for input errors and set the proper state in the ErrorHandler
+     */
+    private fun hasInputErrors() : Boolean{
         if (titleState.isBlank()) {
-            showErrorMessage("Please add a title")
-            return false
+            errorHandler.onError(R.string.error_title_missing)
+            return true
         }
 
         setList.forEach {
             if (it.value.isBlank()) {
-                showErrorMessage("Please add a title to every set")
-                return false
+                errorHandler.onError(R.string.error_set_title_missing)
+                return true
             }
         }
 
-        workoutPlanRepo.save(WorkoutPlan(title = titleState))
-        return true
-    }
-
-    private fun showErrorMessage(message: String) {
-        viewModelScope.launch {
-            snackBarHostState.showSnackbar(
-                message = message,
-                duration = SnackbarDuration.Short,
-                withDismissAction = false
-            )
-        }
+        return false
     }
 }
