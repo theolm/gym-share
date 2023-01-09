@@ -91,7 +91,7 @@ fun HomePage(
                     list = viewModel.workoutList,
                     paddingValues = paddingValues,
                     onLongClick = {
-                        scope.launch { modalBottomSheetState.hide() }
+                        scope.launch { modalBottomSheetState.show() }
                     }
                 )
             }
