@@ -1,8 +1,4 @@
-@file:OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
-    ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class,
-    ExperimentalAnimationApi::class, ExperimentalAnimationApi::class
-)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
 package com.theolm.gym_share.ui.page.addWorkout
 
