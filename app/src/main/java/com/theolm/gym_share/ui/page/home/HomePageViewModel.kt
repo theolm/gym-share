@@ -37,26 +37,21 @@ class HomePageViewModel @Inject constructor(
         }
     }
 
-    fun onLongClickWorkout(index: Int) {
-        viewModelScope.launch {
-            selectedWorkout = workoutList[index]
-            modalBottomSheetState.show()
-        }
+    suspend fun onLongClickWorkout(index: Int) {
+        selectedWorkout = workoutList[index]
+        modalBottomSheetState.show()
     }
 
-    fun onDeleteWorkout() {
-        viewModelScope.launch {
-            selectedWorkout?.let { workoutPlanRepo.delete(it) }
-            selectedWorkout = null
-            modalBottomSheetState.hide()
-        }
+    suspend fun onDeleteWorkout() {
+        selectedWorkout?.let { workoutPlanRepo.delete(it) }
+        selectedWorkout = null
+        modalBottomSheetState.hide()
     }
 
-    fun onEditWorkout() {
-        viewModelScope.launch {
-            //TODO: Edit
-            selectedWorkout = null
-            modalBottomSheetState.hide()
-        }
+    suspend fun onEditWorkout(): Int? {
+        val uid = selectedWorkout?.uid ?: return null
+        selectedWorkout = null
+        modalBottomSheetState.hide()
+        return uid
     }
 }

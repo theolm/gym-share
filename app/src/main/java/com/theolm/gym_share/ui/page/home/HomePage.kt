@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -25,6 +26,7 @@ import com.theolm.gym_share.ui.page.home.components.NoWorkoutYet
 import com.theolm.gym_share.ui.page.home.components.WorkoutList
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
@@ -50,10 +52,12 @@ private fun PreviewDark() {
 @Composable
 fun HomePage(
     viewModel: HomePageViewModel = hiltViewModel(),
-    onAddClick: () -> Unit = {}
+    onAddClick: () -> Unit = {},
+    onEditClick: (Int) -> Unit = {}
 ) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
+    val scope = rememberCoroutineScope()
 
     BottomSheetWrapper(
         bottomSheetState = viewModel.modalBottomSheetState,
@@ -61,13 +65,23 @@ fun HomePage(
             RowIconButton(
                 imageVector = Icons.Filled.Edit,
                 title = stringResource(id = R.string.edit),
-                onClick = viewModel::onEditWorkout
+                onClick = {
+                    scope.launch {
+                        viewModel.onEditWorkout()?.let {
+                            onEditClick.invoke(it)
+                        }
+                    }
+                }
             )
 
             RowIconButton(
                 imageVector = Icons.Filled.Delete,
                 title = stringResource(id = R.string.delete),
-                onClick = viewModel::onDeleteWorkout
+                onClick = {
+                    scope.launch {
+                        viewModel.onDeleteWorkout()
+                    }
+                }
             )
         }
     ) {
@@ -94,7 +108,11 @@ fun HomePage(
                 WorkoutList(
                     list = viewModel.workoutList,
                     paddingValues = paddingValues,
-                    onLongClick = viewModel::onLongClickWorkout
+                    onLongClick = {
+                        scope.launch {
+                            viewModel.onLongClickWorkout(it)
+                        }
+                    }
                 )
             }
         }

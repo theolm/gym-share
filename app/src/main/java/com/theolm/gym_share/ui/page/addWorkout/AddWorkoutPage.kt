@@ -67,7 +67,8 @@ private fun PreviewDark() {
 @Composable
 fun AddWorkoutPage(
     viewModel: AddWorkoutViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
+    uid : String? = null,
 ) {
     val scope = rememberCoroutineScope()
     val topAppBarState = rememberTopAppBarState()
