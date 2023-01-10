@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
-
 package com.theolm.gym_share.ui.page.addWorkout
 
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -13,9 +11,8 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -36,6 +33,7 @@ import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalAnimationApi::class)
 @Preview
 @Composable
 private fun PreviewLight() {
@@ -50,6 +48,7 @@ private fun PreviewLight() {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Preview
 @Composable
 private fun PreviewDark() {
@@ -64,16 +63,20 @@ private fun PreviewDark() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddWorkoutPage(
     viewModel: AddWorkoutViewModel = hiltViewModel(),
     navController: NavController,
-    uid : String? = null,
+    uid: Int? = null,
 ) {
+    LoadWorkoutIfNeeded(uid, viewModel)
+
     val scope = rememberCoroutineScope()
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
 
+    val uiState = viewModel.uiState
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -121,13 +124,9 @@ fun AddWorkoutPage(
                 val focusManager = LocalFocusManager.current
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.titleState,
-                    label = {
-                        Text(text = stringResource(id = R.string.workout_title))
-                    },
-                    onValueChange = {
-                        viewModel.titleState = it
-                    },
+                    value = uiState.title,
+                    label = { Text(text = stringResource(id = R.string.workout_title)) },
+                    onValueChange = { viewModel.onTitleChange(it) },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                 )
@@ -160,7 +159,7 @@ fun AddWorkoutPage(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            items(viewModel.setList.size) { pos ->
+            items(uiState.setList.size) { pos ->
                 WorkoutSetRow(viewModel, pos)
             }
         }
@@ -169,9 +168,10 @@ fun AddWorkoutPage(
     viewModel.errorHandler.ErrorObserver()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun WorkoutSetRow(viewModel: AddWorkoutViewModel, pos: Int) {
-    var state by viewModel.setList[pos]
+    val set = viewModel.uiState.setList[pos]
     val focusManager = LocalFocusManager.current
 
     Row(Modifier.fillMaxWidth()) {
@@ -185,8 +185,8 @@ private fun WorkoutSetRow(viewModel: AddWorkoutViewModel, pos: Int) {
             modifier = Modifier
                 .weight(1f)
                 .padding(vertical = 8.dp),
-            value = state,
-            onValueChange = { state = it },
+            value = set,
+            onValueChange = { viewModel.onEditSet(pos, it) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
@@ -207,6 +207,13 @@ private fun WorkoutSetRow(viewModel: AddWorkoutViewModel, pos: Int) {
                 contentDescription = null
             )
         }
+    }
+}
+
+@Composable
+fun LoadWorkoutIfNeeded(uid: Int?, viewModel: AddWorkoutViewModel) {
+    LaunchedEffect(true) {
+        uid?.let { viewModel.loadWorkoutForEdition(it) }
     }
 }
 

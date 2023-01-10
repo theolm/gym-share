@@ -48,9 +48,11 @@ fun NavHostPage() {
                 arguments = listOf(navArgument(Args.UID) { type = NavType.StringType })
             ) { backStackEntry ->
                 val uid = backStackEntry.arguments?.getString(Args.UID)
+                    ?: throw Exception("Edit Arg missing")
+
                 AddWorkoutPage(
                     navController = navController,
-                    uid = uid
+                    uid = uid.toInt()
                 )
             }
         }

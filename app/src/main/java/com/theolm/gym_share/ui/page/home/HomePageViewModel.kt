@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package com.theolm.gym_share.ui.page.home
 
 import androidx.compose.material.ExperimentalMaterialApi
@@ -17,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalMaterialApi::class)
 @HiltViewModel
 class HomePageViewModel @Inject constructor(
     private val workoutPlanRepo: WorkoutPlanRepo

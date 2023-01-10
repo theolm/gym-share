@@ -7,7 +7,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WorkoutPlanDao {
     @Query("SELECT * FROM WorkoutPlan")
-    fun getAll() : Flow<List<WorkoutPlan>>
+    fun getAll(): Flow<List<WorkoutPlan>>
+
+    @Query("SELECT * FROM WorkoutPlan WHERE uid=:uid ")
+    suspend fun getById(uid: Int): WorkoutPlan
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkoutPlan(workoutPlan: WorkoutPlan)
