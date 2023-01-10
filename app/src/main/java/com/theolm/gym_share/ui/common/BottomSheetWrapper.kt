@@ -1,11 +1,12 @@
-@file:OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialApi::class,
-    ExperimentalMaterialApi::class
-)
+@file:OptIn(ExperimentalMaterialApi::class)
 
 package com.theolm.gym_share.ui.common
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -50,11 +51,9 @@ fun BottomSheetWrapper(
         sheetContentColor = contentColorFor(MaterialTheme.colorScheme.surface),
         content = content,
         sheetContent = {
-            Column(modifier = Modifier.padding(horizontal = 28.dp)) {
-                Spacer(modifier = Modifier.height(44.dp))
-                sheetContent.invoke(this)
-                Spacer(modifier = Modifier.navigationBarsPadding())
-            }
+            Spacer(modifier = Modifier.height(28.dp))
+            sheetContent.invoke(this)
+            Spacer(modifier = Modifier.navigationBarsPadding())
         }
     )
 }

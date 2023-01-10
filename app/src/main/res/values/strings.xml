@@ -2,6 +2,8 @@
     <string name="app_name">Gym Share</string>
     <string name="add_workout_plan_page_title">Creating Workout Plan</string>
     <string name="workout_title">Title</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
     <!--    Errors-->
     <string name="error_title_missing">Please add a title</string>

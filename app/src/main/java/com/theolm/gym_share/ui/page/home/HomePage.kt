@@ -4,13 +4,12 @@ package com.theolm.gym_share.ui.page.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -19,13 +18,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.ui.common.BottomSheetWrapper
+import com.theolm.gym_share.ui.common.RowIconButton
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.components.DefTopBarAction
 import com.theolm.gym_share.ui.page.home.components.NoWorkoutYet
 import com.theolm.gym_share.ui.page.home.components.WorkoutList
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
-import kotlinx.coroutines.launch
 
 @Preview
 @Composable
@@ -55,16 +54,21 @@ fun HomePage(
 ) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
-    val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    val scope = rememberCoroutineScope()
 
     BottomSheetWrapper(
-        bottomSheetState = modalBottomSheetState,
+        bottomSheetState = viewModel.modalBottomSheetState,
         sheetContent = {
-            Text(text = "Text 1")
-            Text(text = "Text 2")
-            Text(text = "Text 3")
-            Text(text = "Text 4")
+            RowIconButton(
+                imageVector = Icons.Filled.Edit,
+                title = stringResource(id = R.string.edit),
+                onClick = viewModel::onEditWorkout
+            )
+
+            RowIconButton(
+                imageVector = Icons.Filled.Delete,
+                title = stringResource(id = R.string.delete),
+                onClick = viewModel::onDeleteWorkout
+            )
         }
     ) {
         Scaffold(
@@ -90,9 +94,7 @@ fun HomePage(
                 WorkoutList(
                     list = viewModel.workoutList,
                     paddingValues = paddingValues,
-                    onLongClick = {
-                        scope.launch { modalBottomSheetState.show() }
-                    }
+                    onLongClick = viewModel::onLongClickWorkout
                 )
             }
         }

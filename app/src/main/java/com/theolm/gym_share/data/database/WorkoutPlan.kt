@@ -13,7 +13,7 @@ interface WorkoutPlanDao {
     suspend fun insertWorkoutPlan(workoutPlan: WorkoutPlan)
 
     @Delete
-    suspend fun delete(user: WorkoutPlan)
+    suspend fun delete(workoutPlan: WorkoutPlan)
 }
 
 @Entity

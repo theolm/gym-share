@@ -11,6 +11,7 @@ import javax.inject.Inject
 
 interface WorkoutPlanRepo {
     suspend fun save(workoutPlan: WorkoutPlan)
+    suspend fun delete(workoutPlan: WorkoutPlan)
     fun getAll(): Flow<List<WorkoutPlan>>
 }
 
@@ -23,6 +24,12 @@ class WorkoutPlanRepoImpl @Inject constructor(
         }
     }
 
+    override suspend fun delete(workoutPlan: WorkoutPlan) {
+        withContext(Dispatchers.IO) {
+            workoutPlanDao.delete(workoutPlan)
+        }
+    }
+
     override fun getAll(): Flow<List<WorkoutPlan>> {
         return workoutPlanDao.getAll()
     }
@@ -31,6 +38,7 @@ class WorkoutPlanRepoImpl @Inject constructor(
 
 class MockWorkoutPlanRepo : WorkoutPlanRepo {
     override suspend fun save(workoutPlan: WorkoutPlan) = Unit
+    override suspend fun delete(workoutPlan: WorkoutPlan) = Unit
     override fun getAll(): Flow<List<WorkoutPlan>> = flow { emptyList<WorkoutPlan>() }
 }
 
