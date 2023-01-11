@@ -102,11 +102,12 @@ fun HomePage(
                 )
             }
         ) { paddingValues ->
-            if (viewModel.workoutList.isEmpty()) {
+            val list = viewModel.workoutList
+            if (list.isEmpty()) {
                 NoWorkoutYet()
             } else {
                 WorkoutList(
-                    list = viewModel.workoutList,
+                    list = list,
                     paddingValues = paddingValues,
                     onLongClick = {
                         scope.launch {

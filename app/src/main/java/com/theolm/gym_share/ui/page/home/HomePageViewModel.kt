@@ -8,8 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theolm.gym_share.data.database.WorkoutPlan
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
+import com.theolm.gym_share.domain.WorkoutPlan
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +48,7 @@ class HomePageViewModel @Inject constructor(
     }
 
     suspend fun onEditWorkout(): Int? {
-        val uid = selectedWorkout?.uid ?: return null
+        val uid = selectedWorkout?.id ?: return null
         selectedWorkout = null
         modalBottomSheetState.hide()
         return uid

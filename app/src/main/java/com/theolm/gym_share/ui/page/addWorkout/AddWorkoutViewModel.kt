@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theolm.gym_share.R
-import com.theolm.gym_share.data.database.WorkoutPlan
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
+import com.theolm.gym_share.domain.WorkoutPlan
 import com.theolm.gym_share.ui.common.ErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -40,7 +40,12 @@ class AddWorkoutViewModel @Inject constructor(
         return if (hasInputErrors()) {
             false
         } else {
-            workoutPlanRepo.save(WorkoutPlan(uid = uiState.uid ?: 0, title = uiState.title))
+            workoutPlanRepo.save(
+                WorkoutPlan(
+                    id = uiState.uid ?: 0,
+                    title = uiState.title
+                )
+            )
             true
         }
     }
