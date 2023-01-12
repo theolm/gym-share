@@ -1,16 +1,29 @@
 package com.theolm.gym_share.data.repositories
 
+import com.theolm.gym_share.data.database.StupidDB
 import com.theolm.gym_share.domain.WorkoutPlan
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.random.Random
 
 
-class WorkoutPlanRepoInMemory @Inject constructor() : WorkoutPlanRepo {
-    private val list = arrayListOf<WorkoutPlan>()
-    private val channel = Channel<List<WorkoutPlan>>(Channel.CONFLATED)
+class WorkoutPlanRepoInMemory @Inject constructor(
+    private val stupidDB: StupidDB
+) : WorkoutPlanRepo {
+    private val list = ArrayList(stupidDB.read())
+    private val sharedFlow =
+        MutableSharedFlow<List<WorkoutPlan>>(
+            replay = 1,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST
+        )
+
+    init {
+        sharedFlow.tryEmit(list)
+    }
 
     override suspend fun get(id: Int): WorkoutPlan {
         list.forEach {
@@ -33,14 +46,22 @@ class WorkoutPlanRepoInMemory @Inject constructor() : WorkoutPlanRepo {
             list.add(memWorkout)
         }
 
-        channel.send(ArrayList(list))
+        sharedFlow.tryEmit(ArrayList(list))
+
+        dbWrite()
     }
 
     override suspend fun delete(workoutPlan: WorkoutPlan) {
         list.remove(workoutPlan)
-        channel.send(ArrayList(list))
+        sharedFlow.tryEmit(ArrayList(list))
+
+        dbWrite()
     }
 
-    override fun getAll(): Flow<List<WorkoutPlan>> = channel.receiveAsFlow()
+    override fun getAll(): Flow<List<WorkoutPlan>> = sharedFlow
+
+    private suspend fun dbWrite() {
+        withContext(Dispatchers.IO) { stupidDB.write(list) }
+    }
 
 }

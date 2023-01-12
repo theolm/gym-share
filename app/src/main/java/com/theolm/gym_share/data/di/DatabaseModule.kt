@@ -1,8 +1,12 @@
 package com.theolm.gym_share.data.di
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import androidx.room.Room
+import com.squareup.moshi.Moshi
 import com.theolm.gym_share.data.database.AppDatabase
+import com.theolm.gym_share.data.database.StupidDB
+import com.theolm.gym_share.data.database.StupidPref
 import com.theolm.gym_share.data.database.WorkoutPlanDao
 import dagger.Module
 import dagger.Provides
@@ -28,4 +32,15 @@ class DatabaseModule {
             "gymShare"
         ).build()
     }
+
+    @Provides
+    fun providesStupidDB(@ApplicationContext appContext: Context, moshi: Moshi): StupidDB {
+        val prefs = appContext.getSharedPreferences(StupidPref, MODE_PRIVATE)
+        return StupidDB(prefs, moshi)
+    }
+
+    @Provides
+    fun providesMoshi(): Moshi = Moshi
+        .Builder()
+        .build()
 }

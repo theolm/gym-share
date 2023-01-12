@@ -84,6 +84,9 @@ dependencies {
     implementation(Deps.hiltNacCompose)
     kapt(Deps.hiltCompiler)
 
+    implementation(Deps.moshi)
+    kapt(Deps.moshiCodeGen)
+
     implementation(Deps.roomRuntime)
     implementation(Deps.roomKtx)
     kapt(Deps.roomCompiler)
