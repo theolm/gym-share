@@ -171,7 +171,7 @@ fun AddWorkoutPage(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun WorkoutSetRow(viewModel: AddWorkoutViewModel, pos: Int) {
-    val set = viewModel.uiState.setList[pos]
+    val set = viewModel.uiState.setList[pos].title
     val focusManager = LocalFocusManager.current
 
     Row(Modifier.fillMaxWidth()) {

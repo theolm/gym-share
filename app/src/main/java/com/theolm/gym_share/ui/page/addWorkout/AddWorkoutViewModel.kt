@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
-import com.theolm.gym_share.domain.WorkoutPlan
 import com.theolm.gym_share.ui.common.ErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -40,12 +39,7 @@ class AddWorkoutViewModel @Inject constructor(
         return if (hasInputErrors()) {
             false
         } else {
-            workoutPlanRepo.save(
-                WorkoutPlan(
-                    id = uiState.uid ?: 0,
-                    title = uiState.title
-                )
-            )
+            workoutPlanRepo.save(uiState.toWorkoutPlan())
             true
         }
     }
@@ -55,7 +49,8 @@ class AddWorkoutViewModel @Inject constructor(
             val workout = workoutPlanRepo.get(uid)
             uiState = WorkoutUiState(
                 uid = uid,
-                title = workout.title
+                title = workout.title,
+                setList = workout.setList
             )
         }
     }
@@ -70,7 +65,7 @@ class AddWorkoutViewModel @Inject constructor(
         }
 
         uiState.setList.forEach {
-            if (it.isBlank()) {
+            if (it.title.isBlank()) {
                 errorHandler.onError(R.string.error_set_title_missing)
                 return true
             }

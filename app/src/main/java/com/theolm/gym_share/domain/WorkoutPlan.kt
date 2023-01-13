@@ -1,6 +1,7 @@
 package com.theolm.gym_share.domain
 
 import com.squareup.moshi.JsonClass
+import kotlin.random.Random
 
 @JsonClass(generateAdapter = true)
 data class WorkoutPlan constructor(
@@ -11,14 +12,14 @@ data class WorkoutPlan constructor(
 
 @JsonClass(generateAdapter = true)
 data class WorkoutSet(
-    val id: Int,
-    val title: String,
-    val exerciseList: List<Exercise>
+    val id: Int = Random.nextInt(),
+    val title: String = "",
+    val exerciseList: List<Exercise> = listOf()
 )
 
 @JsonClass(generateAdapter = true)
 data class Exercise(
-    val id: String,
-    val title: String,
+    val id: Int = Random.nextInt(),
+    val title: String = "",
 )
 
