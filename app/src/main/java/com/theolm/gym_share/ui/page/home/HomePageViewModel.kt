@@ -3,9 +3,7 @@ package com.theolm.gym_share.ui.page.home
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
@@ -21,7 +19,7 @@ class HomePageViewModel @Inject constructor(
     private val workoutPlanRepo: WorkoutPlanRepo
 ) : ViewModel() {
     val modalBottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    var workoutList by mutableStateOf(listOf<WorkoutPlan>())
+    var workoutList = mutableStateListOf<WorkoutPlan>()
     var selectedWorkout: WorkoutPlan? = null
 
     init {
@@ -31,7 +29,8 @@ class HomePageViewModel @Inject constructor(
     private fun loadWorkoutList() {
         viewModelScope.launch(Dispatchers.Main) {
             workoutPlanRepo.getAll().collect {
-                workoutList = it
+                workoutList.clear()
+                workoutList.addAll(it)
             }
         }
     }

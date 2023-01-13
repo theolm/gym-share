@@ -26,11 +26,7 @@ class WorkoutPlanRepoInMemory @Inject constructor(
     }
 
     override suspend fun get(id: Int): WorkoutPlan {
-        list.forEach {
-            if (it.id == id) return it
-        }
-
-        throw Exception("WorkoutPlan don't exist")
+        return list.find { it.id == id } ?: throw Exception("WorkoutPlan don't exist")
     }
 
     override suspend fun save(workoutPlan: WorkoutPlan) {
@@ -46,14 +42,14 @@ class WorkoutPlanRepoInMemory @Inject constructor(
             list.add(memWorkout)
         }
 
-        sharedFlow.tryEmit(ArrayList(list))
+        sharedFlow.emit(ArrayList(list))
 
         dbWrite()
     }
 
     override suspend fun delete(workoutPlan: WorkoutPlan) {
         list.remove(workoutPlan)
-        sharedFlow.tryEmit(ArrayList(list))
+        sharedFlow.emit(ArrayList(list))
 
         dbWrite()
     }
