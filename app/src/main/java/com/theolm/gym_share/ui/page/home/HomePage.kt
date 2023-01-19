@@ -18,10 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
-import com.theolm.gym_share.ui.common.BottomSheetWrapper
-import com.theolm.gym_share.ui.common.RowIconButton
-import com.theolm.gym_share.ui.components.DefTopBar
-import com.theolm.gym_share.ui.components.DefTopBarAction
+import com.theolm.gym_share.ui.common.components.BottomSheetWrapper
+import com.theolm.gym_share.ui.common.components.DefTopBar
+import com.theolm.gym_share.ui.common.components.DefTopBarAction
+import com.theolm.gym_share.ui.common.components.RowIconButton
 import com.theolm.gym_share.ui.page.home.components.NoWorkoutYet
 import com.theolm.gym_share.ui.page.home.components.WorkoutList
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
@@ -60,14 +60,14 @@ fun HomePage(
     val scope = rememberCoroutineScope()
 
     BottomSheetWrapper(
-        bottomSheetState = viewModel.modalBottomSheetState,
+        bottomSheetHostState = viewModel.bottomSheetHostState,
         sheetContent = {
             RowIconButton(
                 imageVector = Icons.Filled.Edit,
                 title = stringResource(id = R.string.edit),
                 onClick = {
                     scope.launch {
-                        viewModel.onEditWorkout()?.let {
+                        viewModel.onEditWorkout(it)?.let {
                             onEditClick.invoke(it)
                         }
                     }
@@ -79,7 +79,7 @@ fun HomePage(
                 title = stringResource(id = R.string.delete),
                 onClick = {
                     scope.launch {
-                        viewModel.onDeleteWorkout()
+                        viewModel.onDeleteWorkout(it)
                     }
                 }
             )

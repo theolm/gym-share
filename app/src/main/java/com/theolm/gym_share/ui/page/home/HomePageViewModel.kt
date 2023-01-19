@@ -1,13 +1,13 @@
 package com.theolm.gym_share.ui.page.home
 
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
 import com.theolm.gym_share.domain.WorkoutPlan
+import com.theolm.gym_share.ui.common.BottomSheetData
+import com.theolm.gym_share.ui.common.BottomSheetHostState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class HomePageViewModel @Inject constructor(
     private val workoutPlanRepo: WorkoutPlanRepo
 ) : ViewModel() {
-    val modalBottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val bottomSheetHostState = BottomSheetHostState()
     var workoutList = mutableStateListOf<WorkoutPlan>()
     var selectedWorkout: WorkoutPlan? = null
 
@@ -37,19 +37,21 @@ class HomePageViewModel @Inject constructor(
 
     suspend fun onLongClickWorkout(index: Int) {
         selectedWorkout = workoutList[index]
-        modalBottomSheetState.show()
+
+        val result = bottomSheetHostState.showBottomSheet()
+        println(result)
     }
 
-    suspend fun onDeleteWorkout() {
+    suspend fun onDeleteWorkout(bottomSheetData: BottomSheetData) {
         selectedWorkout?.let { workoutPlanRepo.delete(it) }
         selectedWorkout = null
-        modalBottomSheetState.hide()
+        bottomSheetData.complete(null)
     }
 
-    suspend fun onEditWorkout(): Int? {
+    fun onEditWorkout(bottomSheetData: BottomSheetData): Int? {
         val uid = selectedWorkout?.id ?: return null
         selectedWorkout = null
-        modalBottomSheetState.hide()
+        bottomSheetData.complete(null)
         return uid
     }
 }

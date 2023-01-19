@@ -13,7 +13,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.theolm.gym_share.ui.common.Args
 import com.theolm.gym_share.ui.common.Route
-import com.theolm.gym_share.ui.common.animatedComposable
+import com.theolm.gym_share.ui.common.components.animatedComposable
 import com.theolm.gym_share.ui.page.addWorkout.AddWorkoutPage
 import com.theolm.gym_share.ui.page.home.HomePage
 

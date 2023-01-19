@@ -1,5 +1,6 @@
 package com.theolm.gym_share.ui.page.addWorkout
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,17 +8,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
+import com.theolm.gym_share.ui.common.BottomSheetHostState
 import com.theolm.gym_share.ui.common.ErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalMaterialApi::class)
 @HiltViewModel
 class AddWorkoutViewModel @Inject constructor(
     private val workoutPlanRepo: WorkoutPlanRepo,
     val errorHandler: ErrorHandler
 ) : ViewModel() {
+    val bottomSheetHostState = BottomSheetHostState()
     var uiState by mutableStateOf(WorkoutUiState())
+
 
     fun onTitleChange(title: String) {
         uiState = uiState.copy(title = title)

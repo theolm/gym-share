@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package com.theolm.gym_share.ui.common
+package com.theolm.gym_share.ui.common.components
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.ColumnScope
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.contentColorFor
@@ -18,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.theolm.gym_share.ui.common.BottomSheetData
+import com.theolm.gym_share.ui.common.BottomSheetHostState
 import kotlinx.coroutines.launch
 
 private val cornerSize = CornerSize(28.dp)
@@ -33,18 +34,22 @@ private val elevation = 1.dp
 @Composable
 fun BottomSheetWrapper(
     modifier: Modifier = Modifier,
-    bottomSheetState: ModalBottomSheetState,
-    sheetContent: @Composable ColumnScope.() -> Unit,
+    bottomSheetHostState : BottomSheetHostState,
+    sheetContent: @Composable ColumnScope.(BottomSheetData) -> Unit,
     content: @Composable () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    BackHandler(bottomSheetState.isVisible) {
-        scope.launch { bottomSheetState.hide() }
+    val state = bottomSheetHostState.modalBottomSheetState
+
+    BackHandler(state.isVisible) {
+        scope.launch {
+            bottomSheetHostState.dismiss()
+        }
     }
 
     ModalBottomSheetLayout(
         modifier = modifier,
-        sheetState = bottomSheetState,
+        sheetState = state,
         sheetShape = shape,
         sheetElevation = elevation,
         sheetBackgroundColor = MaterialTheme.colorScheme.surface,
@@ -52,7 +57,9 @@ fun BottomSheetWrapper(
         content = content,
         sheetContent = {
             Spacer(modifier = Modifier.height(28.dp))
-            sheetContent.invoke(this)
+            bottomSheetHostState.currentBsState?.let {
+                sheetContent.invoke(this, it)
+            }
             Spacer(modifier = Modifier.navigationBarsPadding())
         }
     )

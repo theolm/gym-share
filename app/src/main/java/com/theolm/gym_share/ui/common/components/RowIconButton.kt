@@ -1,4 +1,4 @@
-package com.theolm.gym_share.ui.common
+package com.theolm.gym_share.ui.common.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
