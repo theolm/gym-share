@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,12 +20,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.extensions.toAlphabetLetter
 import com.theolm.gym_share.ui.common.MockErrorHandler
+import com.theolm.gym_share.ui.common.Route
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.page.addWorkout.components.WorkoutSetRow
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
@@ -39,10 +40,7 @@ import kotlinx.coroutines.launch
 private fun PreviewLight() {
     PreviewThemeLight {
         AddWorkoutPage(
-            viewModel = AddWorkoutViewModel(
-                MockWorkoutPlanRepo(),
-                MockErrorHandler()
-            ),
+            viewModel = mockViewModel(),
             navController = rememberAnimatedNavController()
         )
     }
@@ -54,24 +52,24 @@ private fun PreviewLight() {
 private fun PreviewDark() {
     PreviewThemeDark {
         AddWorkoutPage(
-            viewModel = AddWorkoutViewModel(
-                MockWorkoutPlanRepo(),
-                MockErrorHandler()
-            ),
+            viewModel = mockViewModel(),
             navController = rememberAnimatedNavController()
         )
     }
 }
+
+fun mockViewModel() = AddWorkoutViewModel(
+    MockWorkoutPlanRepo(),
+    MockErrorHandler(),
+    SavedStateHandle()
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddWorkoutPage(
     viewModel: AddWorkoutViewModel = hiltViewModel(),
     navController: NavController,
-    uid: Int? = null,
 ) {
-    LoadWorkoutIfNeeded(uid, viewModel)
-
     val scope = rememberCoroutineScope()
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
@@ -170,6 +168,14 @@ fun AddWorkoutPage(
                     onDeleteClick = {
                         viewModel.onDeleteSet(position)
                     },
+                    onAddClick = {
+                        navController.navigate(route = Route.ADD_EXERCISE) {
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
+                    }
                 )
             }
         }
@@ -177,12 +183,3 @@ fun AddWorkoutPage(
 
     viewModel.errorHandler.ErrorObserver()
 }
-
-@Composable
-fun LoadWorkoutIfNeeded(uid: Int?, viewModel: AddWorkoutViewModel) {
-    LaunchedEffect(true) {
-        uid?.let { viewModel.loadWorkoutForEdition(it) }
-    }
-}
-
-

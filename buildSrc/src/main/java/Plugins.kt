@@ -4,4 +4,5 @@ object Plugins {
     const val kotlinAndroid = "org.jetbrains.kotlin.android"
     const val kapt = "kapt"
     const val hilt = "com.google.dagger.hilt.android"
+    const val parcelize = "kotlin-parcelize"
 }

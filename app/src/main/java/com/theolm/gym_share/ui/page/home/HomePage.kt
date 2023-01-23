@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
+import com.theolm.gym_share.domain.WorkoutPlan
 import com.theolm.gym_share.ui.common.BottomSheetWrapper
 import com.theolm.gym_share.ui.common.RowIconButton
 import com.theolm.gym_share.ui.components.DefTopBar
@@ -53,7 +54,7 @@ private fun PreviewDark() {
 fun HomePage(
     viewModel: HomePageViewModel = hiltViewModel(),
     onAddClick: () -> Unit = {},
-    onEditClick: (Int) -> Unit = {}
+    onEditClick: (WorkoutPlan) -> Unit = {}
 ) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)

@@ -30,4 +30,12 @@ data class WorkoutUiState(
             title = title,
             setList = setList
         )
+
+    companion object {
+        fun fromWorkoutPlan(workoutPlan: WorkoutPlan) = WorkoutUiState(
+            uid = workoutPlan.id,
+            title = workoutPlan.title,
+            setList = workoutPlan.setList
+        )
+    }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ fun WorkoutSetRow(
     setLetter: Char,
     onValueChange: (String) -> Unit,
     onDeleteClick: ()-> Unit,
+    onAddClick: ()-> Unit,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -45,6 +47,16 @@ fun WorkoutSetRow(
                 }
             ),
         )
+
+        IconButton(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            onClick = onAddClick
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = null
+            )
+        }
 
         IconButton(
             modifier = Modifier.align(Alignment.CenterVertically),

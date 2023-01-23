@@ -46,10 +46,8 @@ class HomePageViewModel @Inject constructor(
         modalBottomSheetState.hide()
     }
 
-    suspend fun onEditWorkout(): Int? {
-        val uid = selectedWorkout?.id ?: return null
-        selectedWorkout = null
+    suspend fun onEditWorkout(): WorkoutPlan? {
         modalBottomSheetState.hide()
-        return uid
+        return selectedWorkout
     }
 }
