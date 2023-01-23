@@ -7,7 +7,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -29,6 +28,7 @@ import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.extensions.toAlphabetLetter
 import com.theolm.gym_share.ui.common.MockErrorHandler
 import com.theolm.gym_share.ui.components.DefTopBar
+import com.theolm.gym_share.ui.page.addWorkout.components.WorkoutSetRow
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
 import kotlinx.coroutines.launch
@@ -159,55 +159,23 @@ fun AddWorkoutPage(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            items(uiState.setList.size) { pos ->
-                WorkoutSetRow(viewModel, pos)
+            items(uiState.setList.size) { position ->
+                val workoutSet = viewModel.uiState.setList[position]
+                WorkoutSetRow(
+                    workoutSet = workoutSet,
+                    setLetter = position.toAlphabetLetter(),
+                    onValueChange = {
+                        viewModel.onEditSet(position, it)
+                    },
+                    onDeleteClick = {
+                        viewModel.onDeleteSet(position)
+                    },
+                )
             }
         }
     }
 
     viewModel.errorHandler.ErrorObserver()
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun WorkoutSetRow(viewModel: AddWorkoutViewModel, pos: Int) {
-    val set = viewModel.uiState.setList[pos].title
-    val focusManager = LocalFocusManager.current
-
-    Row(Modifier.fillMaxWidth()) {
-        Text(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            text = "${pos.toAlphabetLetter()}.",
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        TextField(
-            modifier = Modifier
-                .weight(1f)
-                .padding(vertical = 8.dp),
-            value = set,
-            onValueChange = { viewModel.onEditSet(pos, it) },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
-                }
-            ),
-        )
-
-        IconButton(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            onClick = {
-                viewModel.onDeleteSet(pos)
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Delete,
-                contentDescription = null
-            )
-        }
-    }
 }
 
 @Composable

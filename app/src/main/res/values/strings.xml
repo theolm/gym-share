@@ -8,4 +8,5 @@
     <!--    Errors-->
     <string name="error_title_missing">Please add a title</string>
     <string name="error_set_title_missing">Please add a title for every set</string>
+    <string name="error_workout_set_missing">You need to add at least one set</string>
 </resources>

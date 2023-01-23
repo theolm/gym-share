@@ -64,6 +64,11 @@ class AddWorkoutViewModel @Inject constructor(
             return true
         }
 
+        if (uiState.setList.isEmpty()) {
+            errorHandler.onError(R.string.error_workout_set_missing)
+            return true
+        }
+
         uiState.setList.forEach {
             if (it.title.isBlank()) {
                 errorHandler.onError(R.string.error_set_title_missing)
