@@ -91,12 +91,6 @@ fun AddExercisePage(
                     val exercise = Exercise(title = title)
                     val updatedWorkout = workoutPlan.addExercise(workoutSet.id, exercise)
                     resultBackNavigator.navigateBack(updatedWorkout)
-
-//                    navigator.navigate(
-//                        direction = AddWorkoutPageDestination(workoutPlan = updatedWorkout)
-//                    ) {
-//                        popUpTo(route = HomePageDestination)
-//                    }
                 }
             )
         },

@@ -3,11 +3,13 @@ package com.theolm.gym_share.ui.page.addWorkout
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
 import com.theolm.gym_share.domain.WorkoutPlan
 import com.theolm.gym_share.ui.common.ErrorHandler
+import com.theolm.gym_share.ui.page.destinations.AddWorkoutPageDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,8 +17,16 @@ import javax.inject.Inject
 class AddWorkoutViewModel @Inject constructor(
     private val workoutPlanRepo: WorkoutPlanRepo,
     val errorHandler: ErrorHandler,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     var uiState by mutableStateOf(WorkoutUiState())
+
+    init {
+        val editWorkout = AddWorkoutPageDestination.argsFrom(savedStateHandle)
+        editWorkout.workoutPlan?.let {
+            updateUiState(it)
+        }
+    }
 
     fun onTitleChange(title: String) {
         uiState = uiState.copy(title = title)
