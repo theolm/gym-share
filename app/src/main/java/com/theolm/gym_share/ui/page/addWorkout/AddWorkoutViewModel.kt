@@ -24,7 +24,7 @@ class AddWorkoutViewModel @Inject constructor(
     init {
         savedStateHandle.get<String>(Args.WORKOUT)?.let {
             val editWorkout = WorkoutPlan.fromJson(it)
-            initWorkoutForEdition(editWorkout)
+            updateUiState(editWorkout)
         }
     }
 
@@ -53,7 +53,14 @@ class AddWorkoutViewModel @Inject constructor(
         }
     }
 
-    fun initWorkoutForEdition(workout: WorkoutPlan) {
+    fun checkForResult() {
+        savedStateHandle.get<String>(Args.RESULT)?.let {
+            val editWorkout = WorkoutPlan.fromJson(it)
+            updateUiState(editWorkout)
+        }
+    }
+
+    private fun updateUiState(workout: WorkoutPlan) {
         uiState = WorkoutUiState.fromWorkoutPlan(workout)
     }
 

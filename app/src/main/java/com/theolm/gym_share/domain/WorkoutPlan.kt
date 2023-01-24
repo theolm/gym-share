@@ -45,5 +45,23 @@ data class WorkoutSet(
 data class Exercise(
     val id: Int = Random.nextInt(),
     val title: String = "",
-) : Parcelable
+) : Parcelable {
+    @OptIn(ExperimentalStdlibApi::class)
+    fun toJson() : String {
+        val moshi: Moshi = Moshi.Builder().build()
+        val jsonAdapter: JsonAdapter<Exercise> = moshi.adapter()
+
+        return jsonAdapter.toJson(this)
+    }
+
+    companion object {
+        @OptIn(ExperimentalStdlibApi::class)
+        fun fromJson(json: String): Exercise {
+            val moshi: Moshi = Moshi.Builder().build()
+            val adapter: JsonAdapter<Exercise> = moshi.adapter()
+
+            return adapter.fromJson(json) ?: throw Exception("Exception deserializing")
+        }
+    }
+}
 
