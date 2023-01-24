@@ -5,4 +5,5 @@ object Plugins {
     const val kapt = "kapt"
     const val hilt = "com.google.dagger.hilt.android"
     const val parcelize = "kotlin-parcelize"
+    const val ksp = "com.google.devtools.ksp"
 }

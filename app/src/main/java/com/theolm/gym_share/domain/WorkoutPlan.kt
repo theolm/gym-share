@@ -1,67 +1,45 @@
 package com.theolm.gym_share.domain
 
 import android.os.Parcelable
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonClass
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapter
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class WorkoutPlan constructor(
     val id: Int = 0,
     val title: String,
     val setList: List<WorkoutSet> = listOf()
-) {
-    @OptIn(ExperimentalStdlibApi::class)
-    fun toJson() : String {
-        val moshi: Moshi = Moshi.Builder().build()
-        val jsonAdapter: JsonAdapter<WorkoutPlan> = moshi.adapter()
-
-        return jsonAdapter.toJson(this)
-    }
-
-    companion object {
-        @OptIn(ExperimentalStdlibApi::class)
-        fun fromJson(json: String): WorkoutPlan {
-            val moshi: Moshi = Moshi.Builder().build()
-            val adapter: JsonAdapter<WorkoutPlan> = moshi.adapter()
-
-            return adapter.fromJson(json) ?: throw Exception("Exception deserializing")
+) : Parcelable {
+    fun addExercise(setId: Int, exercise: Exercise): WorkoutPlan {
+        val set = setList.first { it.id == setId }
+        val index = setList.toMutableList().indexOf(set)
+        val mutableList = setList.toMutableList().apply {
+            removeAt(index)
+            add(index, set.addExercise(exercise))
         }
+        return this.copy(setList = mutableList)
     }
 }
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class WorkoutSet(
     val id: Int = Random.nextInt(),
     val title: String = "",
     val exerciseList: List<Exercise> = listOf()
-)
+) : Parcelable {
+    fun addExercise(exercise: Exercise): WorkoutSet =
+        copy(
+            exerciseList = exerciseList.toMutableList().apply { add(exercise) }
+        )
+}
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class Exercise(
     val id: Int = Random.nextInt(),
     val title: String = "",
-) : Parcelable {
-    @OptIn(ExperimentalStdlibApi::class)
-    fun toJson() : String {
-        val moshi: Moshi = Moshi.Builder().build()
-        val jsonAdapter: JsonAdapter<Exercise> = moshi.adapter()
-
-        return jsonAdapter.toJson(this)
-    }
-
-    companion object {
-        @OptIn(ExperimentalStdlibApi::class)
-        fun fromJson(json: String): Exercise {
-            val moshi: Moshi = Moshi.Builder().build()
-            val adapter: JsonAdapter<Exercise> = moshi.adapter()
-
-            return adapter.fromJson(json) ?: throw Exception("Exception deserializing")
-        }
-    }
-}
+) : Parcelable
 

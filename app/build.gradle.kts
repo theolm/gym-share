@@ -4,6 +4,7 @@ plugins {
     kotlin(Plugins.kapt)
     id(Plugins.hilt)
     id(Plugins.parcelize)
+    id(Plugins.ksp) version Versions.kspVersion
 }
 
 android {
@@ -55,6 +56,20 @@ android {
         }
         jniLibs.useLegacyPackaging = true
     }
+
+
+}
+
+kotlin {
+    sourceSets {
+        debug {
+            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+        }
+
+        release {
+            kotlin.srcDir("build/generated/ksp/release/kotlin")
+        }
+    }
 }
 
 dependencies {
@@ -79,7 +94,6 @@ dependencies {
     implementation(Deps.composeMaterial3)
     implementation(Deps.composeWindowSizeClass)
     implementation(Deps.composeRuntime)
-    implementation(Deps.composeNavigation)
     implementation(Deps.composeLiveData)
     implementation(Deps.hiltAndroid)
     implementation(Deps.hiltNacCompose)
@@ -91,6 +105,9 @@ dependencies {
     implementation(Deps.roomRuntime)
     implementation(Deps.roomKtx)
     kapt(Deps.roomCompiler)
+
+    implementation(Deps.composeDestinationCore)
+    ksp(Deps.composeDestinationKsp)
 
     implementation(Deps.composeUiToolingPreview)
     debugImplementation(Deps.composeUiTooling)
