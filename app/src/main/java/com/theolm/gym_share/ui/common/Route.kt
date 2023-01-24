@@ -3,9 +3,10 @@ package com.theolm.gym_share.ui.common
 object Route {
     const val HOME = "home"
     const val ADD_WORKOUT = "addWorkout"
-    const val EDIT_WORKOUT = "editWorkout"
+    const val ADD_EXERCISE = "addExercise"
 }
 
 object Args {
-    const val UID = "uid"
+    const val WORKOUT = "workout"
+    const val RESULT = "result"
 }

@@ -34,9 +34,16 @@ fun NavController.RemoveResult(keyResult: String) {
 }
 
 fun <T> NavController.popBackStackWithResult(keyResult: String, data: T) {
-    currentBackStackEntry
+    previousBackStackEntry
         ?.savedStateHandle
         ?.set<T>(keyResult, data)
 
     this.popBackStack()
+}
+
+@Composable
+fun NavController.navigateWithParam(keyResult: String) {
+    currentBackStackEntry
+        ?.savedStateHandle
+        ?.remove<Any>(keyResult)
 }
