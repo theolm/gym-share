@@ -1,5 +1,6 @@
 package com.theolm.gym_share.ui.page.addWorkout
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -23,6 +24,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.ramcosta.composedestinations.result.EmptyResultRecipient
+import com.ramcosta.composedestinations.result.NavResult
+import com.ramcosta.composedestinations.result.ResultRecipient
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.domain.WorkoutPlan
@@ -42,6 +46,7 @@ private fun PreviewLight() {
         AddWorkoutPage(
             navigator = EmptyDestinationsNavigator,
             viewModel = mockViewModel(),
+            resultRecipient = EmptyResultRecipient(),
         )
     }
 }
@@ -53,6 +58,7 @@ private fun PreviewDark() {
         AddWorkoutPage(
             navigator = EmptyDestinationsNavigator,
             viewModel = mockViewModel(),
+            resultRecipient = EmptyResultRecipient(),
         )
     }
 }
@@ -67,6 +73,7 @@ fun mockViewModel() = AddWorkoutViewModel(
 @Composable
 fun AddWorkoutPage(
     navigator: DestinationsNavigator,
+    resultRecipient: ResultRecipient<AddExercisePageDestination, WorkoutPlan>,
     viewModel: AddWorkoutViewModel = hiltViewModel(),
     workoutPlan: WorkoutPlan? = null,
 ) {
@@ -76,6 +83,13 @@ fun AddWorkoutPage(
 
     LaunchedEffect(true) {
         workoutPlan?.let { viewModel.updateUiState(it) }
+    }
+
+    resultRecipient.onNavResult {
+        Log.d("Test", "onNavResult")
+        if (it is NavResult.Value) {
+            viewModel.updateUiState(it.value)
+        }
     }
 
     val uiState = viewModel.uiState

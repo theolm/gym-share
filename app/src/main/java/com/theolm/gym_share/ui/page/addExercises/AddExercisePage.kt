@@ -16,14 +16,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
-import com.ramcosta.composedestinations.navigation.popUpTo
+import com.ramcosta.composedestinations.result.EmptyResultBackNavigator
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.domain.Exercise
 import com.theolm.gym_share.domain.WorkoutPlan
 import com.theolm.gym_share.domain.WorkoutSet
 import com.theolm.gym_share.ui.common.MockErrorHandler
-import com.theolm.gym_share.ui.page.destinations.AddWorkoutPageDestination
-import com.theolm.gym_share.ui.page.destinations.HomePageDestination
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
 
@@ -33,6 +32,7 @@ private fun PreviewLight() {
     PreviewThemeLight {
         AddExercisePage(
             navigator = EmptyDestinationsNavigator,
+            resultBackNavigator = EmptyResultBackNavigator(),
             viewModel = mockViewModel(),
             workoutPlan = WorkoutPlan(title = "Teste"),
             workoutSet = WorkoutSet(),
@@ -46,6 +46,7 @@ private fun PreviewDark() {
     PreviewThemeDark {
         AddExercisePage(
             navigator = EmptyDestinationsNavigator,
+            resultBackNavigator = EmptyResultBackNavigator(),
             viewModel = mockViewModel(),
             workoutPlan = WorkoutPlan(title = "Teste"),
             workoutSet = WorkoutSet(),
@@ -63,6 +64,7 @@ private fun mockViewModel() = AddExerciseViewModel(
 @Composable
 fun AddExercisePage(
     navigator: DestinationsNavigator,
+    resultBackNavigator: ResultBackNavigator<WorkoutPlan>,
     viewModel: AddExerciseViewModel = hiltViewModel(),
     workoutPlan: WorkoutPlan,
     workoutSet: WorkoutSet,
@@ -88,12 +90,13 @@ fun AddExercisePage(
                 onClick = {
                     val exercise = Exercise(title = title)
                     val updatedWorkout = workoutPlan.addExercise(workoutSet.id, exercise)
+                    resultBackNavigator.navigateBack(updatedWorkout)
 
-                    navigator.navigate(
-                        direction = AddWorkoutPageDestination(workoutPlan = updatedWorkout)
-                    ) {
-                        popUpTo(route = HomePageDestination)
-                    }
+//                    navigator.navigate(
+//                        direction = AddWorkoutPageDestination(workoutPlan = updatedWorkout)
+//                    ) {
+//                        popUpTo(route = HomePageDestination)
+//                    }
                 }
             )
         },
