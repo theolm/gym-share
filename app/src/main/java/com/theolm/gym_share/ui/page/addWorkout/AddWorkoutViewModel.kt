@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.WorkoutPlanRepo
 import com.theolm.gym_share.domain.WorkoutPlan
-import com.theolm.gym_share.ui.common.Args
 import com.theolm.gym_share.ui.common.ErrorHandler
+import com.theolm.gym_share.ui.page.destinations.AddWorkoutPageDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,14 +17,14 @@ import javax.inject.Inject
 class AddWorkoutViewModel @Inject constructor(
     private val workoutPlanRepo: WorkoutPlanRepo,
     val errorHandler: ErrorHandler,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     var uiState by mutableStateOf(WorkoutUiState())
 
     init {
-        savedStateHandle.get<String>(Args.WORKOUT)?.let {
-            val editWorkout = WorkoutPlan.fromJson(it)
-            updateUiState(editWorkout)
+        val editWorkout = AddWorkoutPageDestination.argsFrom(savedStateHandle)
+        editWorkout.workoutPlan?.let {
+            updateUiState(it)
         }
     }
 
@@ -53,14 +53,7 @@ class AddWorkoutViewModel @Inject constructor(
         }
     }
 
-    fun checkForResult() {
-        savedStateHandle.get<String>(Args.RESULT)?.let {
-            val editWorkout = WorkoutPlan.fromJson(it)
-            updateUiState(editWorkout)
-        }
-    }
-
-    private fun updateUiState(workout: WorkoutPlan) {
+    fun updateUiState(workout: WorkoutPlan) {
         uiState = WorkoutUiState.fromWorkoutPlan(workout)
     }
 

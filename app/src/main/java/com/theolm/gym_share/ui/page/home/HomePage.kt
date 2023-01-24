@@ -16,13 +16,17 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
-import com.theolm.gym_share.domain.WorkoutPlan
 import com.theolm.gym_share.ui.common.BottomSheetWrapper
 import com.theolm.gym_share.ui.common.RowIconButton
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.components.DefTopBarAction
+import com.theolm.gym_share.ui.page.destinations.AddWorkoutPageDestination
 import com.theolm.gym_share.ui.page.home.components.NoWorkoutYet
 import com.theolm.gym_share.ui.page.home.components.WorkoutList
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
@@ -34,6 +38,7 @@ import kotlinx.coroutines.launch
 private fun PreviewLight() {
     PreviewThemeLight {
         HomePage(
+            navigator = EmptyDestinationsNavigator,
             viewModel = HomePageViewModel(MockWorkoutPlanRepo())
         )
     }
@@ -44,17 +49,19 @@ private fun PreviewLight() {
 private fun PreviewDark() {
     PreviewThemeDark {
         HomePage(
+            navigator = EmptyDestinationsNavigator,
             viewModel = HomePageViewModel(MockWorkoutPlanRepo())
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun HomePage(
+    navigator: DestinationsNavigator,
     viewModel: HomePageViewModel = hiltViewModel(),
-    onAddClick: () -> Unit = {},
-    onEditClick: (WorkoutPlan) -> Unit = {}
 ) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
@@ -69,7 +76,7 @@ fun HomePage(
                 onClick = {
                     scope.launch {
                         viewModel.onEditWorkout()?.let {
-                            onEditClick.invoke(it)
+                            navigator.navigate(AddWorkoutPageDestination(workoutPlan = it))
                         }
                     }
                 }
@@ -97,7 +104,9 @@ fun HomePage(
                     actions = listOf(
                         DefTopBarAction(
                             icon = Icons.Filled.Add,
-                            onClick = onAddClick
+                            onClick = {
+                                navigator.navigate(AddWorkoutPageDestination())
+                            }
                         )
                     )
                 )
@@ -120,4 +129,3 @@ fun HomePage(
         }
     }
 }
-

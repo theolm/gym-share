@@ -1,6 +1,5 @@
 package com.theolm.gym_share.ui.page.addExercises
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
@@ -14,36 +13,44 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavController
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.ramcosta.composedestinations.result.EmptyResultBackNavigator
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
 import com.theolm.gym_share.domain.Exercise
 import com.theolm.gym_share.domain.WorkoutPlan
 import com.theolm.gym_share.domain.WorkoutSet
-import com.theolm.gym_share.extensions.popBackStackWithResult
-import com.theolm.gym_share.ui.common.Args
 import com.theolm.gym_share.ui.common.MockErrorHandler
-import com.theolm.gym_share.ui.common.Route
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
-import kotlin.random.Random
 
-@OptIn(ExperimentalAnimationApi::class)
 @Preview
 @Composable
 private fun PreviewLight() {
     PreviewThemeLight {
-        AddExercisePage(navController = rememberAnimatedNavController())
+        AddExercisePage(
+            navigator = EmptyDestinationsNavigator,
+            resultBackNavigator = EmptyResultBackNavigator(),
+            viewModel = mockViewModel(),
+            workoutPlan = WorkoutPlan(title = "Teste"),
+            workoutSet = WorkoutSet(),
+        )
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Preview
 @Composable
 private fun PreviewDark() {
     PreviewThemeDark {
-        AddExercisePage(navController = rememberAnimatedNavController())
+        AddExercisePage(
+            navigator = EmptyDestinationsNavigator,
+            resultBackNavigator = EmptyResultBackNavigator(),
+            viewModel = mockViewModel(),
+            workoutPlan = WorkoutPlan(title = "Teste"),
+            workoutSet = WorkoutSet(),
+        )
     }
 }
 
@@ -53,10 +60,14 @@ private fun mockViewModel() = AddExerciseViewModel(
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
 @Composable
 fun AddExercisePage(
-    navController: NavController,
-    viewModel: AddExerciseViewModel = hiltViewModel()
+    navigator: DestinationsNavigator,
+    resultBackNavigator: ResultBackNavigator<WorkoutPlan>,
+    viewModel: AddExerciseViewModel = hiltViewModel(),
+    workoutPlan: WorkoutPlan,
+    workoutSet: WorkoutSet,
 ) {
     var title by remember { mutableStateOf("") }
 
@@ -78,15 +89,8 @@ fun AddExercisePage(
                 },
                 onClick = {
                     val exercise = Exercise(title = title)
-                    val set = WorkoutSet(title = "testando", exerciseList = listOf(exercise))
-                    val workoutPlan = WorkoutPlan(title = "teste", setList = listOf(set))
-                    val json = workoutPlan.toJson()
-
-                    navController.navigate("${Route.ADD_WORKOUT}?$json") {
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-//                    navController.popBackStackWithResult(Args.RESULT, json)
+                    val updatedWorkout = workoutPlan.addExercise(workoutSet.id, exercise)
+                    resultBackNavigator.navigateBack(updatedWorkout)
                 }
             )
         },

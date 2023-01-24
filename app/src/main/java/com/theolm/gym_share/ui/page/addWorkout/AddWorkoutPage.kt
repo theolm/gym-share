@@ -1,6 +1,5 @@
 package com.theolm.gym_share.ui.page.addWorkout
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -10,7 +9,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,39 +20,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavController
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.ramcosta.composedestinations.result.EmptyResultRecipient
+import com.ramcosta.composedestinations.result.NavResult
+import com.ramcosta.composedestinations.result.ResultRecipient
 import com.theolm.gym_share.R
 import com.theolm.gym_share.data.repositories.MockWorkoutPlanRepo
+import com.theolm.gym_share.domain.WorkoutPlan
 import com.theolm.gym_share.extensions.toAlphabetLetter
 import com.theolm.gym_share.ui.common.MockErrorHandler
-import com.theolm.gym_share.ui.common.Route
 import com.theolm.gym_share.ui.components.DefTopBar
 import com.theolm.gym_share.ui.page.addWorkout.components.WorkoutSetRow
+import com.theolm.gym_share.ui.page.destinations.AddExercisePageDestination
 import com.theolm.gym_share.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.ui.theme.PreviewThemeLight
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalAnimationApi::class)
 @Preview
 @Composable
 private fun PreviewLight() {
     PreviewThemeLight {
         AddWorkoutPage(
+            navigator = EmptyDestinationsNavigator,
             viewModel = mockViewModel(),
-            navController = rememberAnimatedNavController()
+            resultRecipient = EmptyResultRecipient(),
         )
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Preview
 @Composable
 private fun PreviewDark() {
     PreviewThemeDark {
         AddWorkoutPage(
+            navigator = EmptyDestinationsNavigator,
             viewModel = mockViewModel(),
-            navController = rememberAnimatedNavController()
+            resultRecipient = EmptyResultRecipient(),
         )
     }
 }
@@ -65,17 +68,25 @@ fun mockViewModel() = AddWorkoutViewModel(
     SavedStateHandle()
 )
 
+data class AddWorkoutPageNavArgs(val workoutPlan: WorkoutPlan? = null)
+
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination(navArgsDelegate = AddWorkoutPageNavArgs::class)
 @Composable
 fun AddWorkoutPage(
+    navigator: DestinationsNavigator,
+    resultRecipient: ResultRecipient<AddExercisePageDestination, WorkoutPlan>,
     viewModel: AddWorkoutViewModel = hiltViewModel(),
-    navController: NavController,
 ) {
     val scope = rememberCoroutineScope()
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
 
-    LaunchedEffect(true) { viewModel.checkForResult() }
+    resultRecipient.onNavResult {
+        if (it is NavResult.Value) {
+            viewModel.updateUiState(it.value)
+        }
+    }
 
     val uiState = viewModel.uiState
     Scaffold(
@@ -87,7 +98,7 @@ fun AddWorkoutPage(
                 title = stringResource(id = R.string.add_workout_plan_page_title),
                 scrollBehavior = scrollBehavior,
                 onBackPress = {
-                    navController.popBackStack()
+                    navigator.popBackStack()
                 },
             )
         },
@@ -105,7 +116,7 @@ fun AddWorkoutPage(
                 onClick = {
                     scope.launch {
                         if (viewModel.saveWorkoutPlan()) {
-                            navController.popBackStack()
+                            navigator.popBackStack()
                         }
                     }
                 }
@@ -172,12 +183,12 @@ fun AddWorkoutPage(
                         viewModel.onDeleteSet(position)
                     },
                     onAddClick = {
-                        navController.navigate(route = Route.ADD_EXERCISE) {
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
+                        navigator.navigate(
+                            direction = AddExercisePageDestination(
+                                workoutPlan = viewModel.uiState.toWorkoutPlan(),
+                                workoutSet = workoutSet
+                            ),
+                        )
                     }
                 )
             }
