@@ -16,7 +16,7 @@ interface ErrorHandler {
     fun ErrorObserver()
 }
 
-class MockErrorHandler : ErrorHandler {
+object MockErrorHandler : ErrorHandler {
     override val snackBarHostState: SnackbarHostState
         get() = SnackbarHostState()
 

@@ -6,16 +6,18 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.theolm.core.data.WorkoutPlan
-import com.theolm.core.repository.WorkoutPlanRepo
+import com.theolm.core.usecase.MockSaveWorkoutPlanUseCase
+import com.theolm.core.usecase.SaveWorkoutPlanUseCase
 import com.theolm.gym_share.R
 import com.theolm.gym_share.presentation.ui.common.ErrorHandler
+import com.theolm.gym_share.presentation.ui.common.MockErrorHandler
 import com.theolm.gym_share.presentation.ui.page.destinations.AddWorkoutPageDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class AddWorkoutViewModel @Inject constructor(
-    private val workoutPlanRepo: WorkoutPlanRepo,
+    private val saveWorkoutPlanUseCase: SaveWorkoutPlanUseCase,
     val errorHandler: ErrorHandler,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -48,7 +50,7 @@ class AddWorkoutViewModel @Inject constructor(
         return if (hasInputErrors()) {
             false
         } else {
-            workoutPlanRepo.save(uiState.toWorkoutPlan())
+            saveWorkoutPlanUseCase(uiState.toWorkoutPlan())
             true
         }
     }
@@ -81,4 +83,11 @@ class AddWorkoutViewModel @Inject constructor(
         return false
     }
 
+    companion object {
+        fun mock() = AddWorkoutViewModel(
+            MockSaveWorkoutPlanUseCase,
+            MockErrorHandler,
+            SavedStateHandle()
+        )
+    }
 }

@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-abstract class RepoModule {
+internal abstract class RepoModule {
     @Singleton
     @Binds
     internal abstract fun bindsWorkoutPlanRepo(repoImpl: WorkoutPlanRepoImpl): WorkoutPlanRepo

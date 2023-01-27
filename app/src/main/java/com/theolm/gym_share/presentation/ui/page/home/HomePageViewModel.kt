@@ -7,7 +7,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theolm.core.data.WorkoutPlan
-import com.theolm.core.repository.WorkoutPlanRepo
+import com.theolm.core.usecase.DeleteWorkoutPlanUseCase
+import com.theolm.core.usecase.MockDeleteWorkoutPlanUseCase
+import com.theolm.core.usecase.MockObserveWorkoutUseCase
+import com.theolm.core.usecase.ObserveWorkoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +19,8 @@ import javax.inject.Inject
 @OptIn(ExperimentalMaterialApi::class)
 @HiltViewModel
 class HomePageViewModel @Inject constructor(
-    private val workoutPlanRepo: WorkoutPlanRepo
+    private val observeWorkoutUseCase: ObserveWorkoutUseCase,
+    private val deleteWorkoutPlanUseCase: DeleteWorkoutPlanUseCase,
 ) : ViewModel() {
     val modalBottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
     var workoutList = mutableStateListOf<WorkoutPlan>()
@@ -28,7 +32,7 @@ class HomePageViewModel @Inject constructor(
 
     private fun loadWorkoutList() {
         viewModelScope.launch(Dispatchers.Main) {
-            workoutPlanRepo.getAll().collect {
+            observeWorkoutUseCase().collect {
                 workoutList.clear()
                 workoutList.addAll(it)
             }
@@ -41,7 +45,7 @@ class HomePageViewModel @Inject constructor(
     }
 
     suspend fun onDeleteWorkout() {
-        selectedWorkout?.let { workoutPlanRepo.delete(it) }
+        selectedWorkout?.let { deleteWorkoutPlanUseCase(it) }
         selectedWorkout = null
         modalBottomSheetState.hide()
     }
@@ -49,5 +53,12 @@ class HomePageViewModel @Inject constructor(
     suspend fun onEditWorkout(): WorkoutPlan? {
         modalBottomSheetState.hide()
         return selectedWorkout
+    }
+
+    companion object {
+        fun mock() = HomePageViewModel(
+            MockObserveWorkoutUseCase,
+            MockDeleteWorkoutPlanUseCase
+        )
     }
 }

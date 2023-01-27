@@ -3,12 +3,11 @@ package com.theolm.core.repository
 import com.theolm.core.data.WorkoutPlan
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-interface WorkoutPlanRepo {
+internal interface WorkoutPlanRepo {
     suspend fun get(id: Int): WorkoutPlan
     suspend fun save(workoutPlan: WorkoutPlan)
     suspend fun delete(workoutPlan: WorkoutPlan)
@@ -40,11 +39,4 @@ internal class WorkoutPlanRepoImpl @Inject constructor(
     override fun getAll(): Flow<List<WorkoutPlan>> {
         return workoutDataSource.getWorkoutFlow()
     }
-}
-
-object MockWorkoutPlanRepo : WorkoutPlanRepo {
-    override suspend fun get(id: Int): WorkoutPlan = WorkoutPlan(title = "", setList = listOf())
-    override suspend fun save(workoutPlan: WorkoutPlan) = Unit
-    override suspend fun delete(workoutPlan: WorkoutPlan) = Unit
-    override fun getAll(): Flow<List<WorkoutPlan>> = flow { emptyList<WorkoutPlan>() }
 }

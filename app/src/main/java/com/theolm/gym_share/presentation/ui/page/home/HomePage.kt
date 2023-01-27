@@ -20,7 +20,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
-import com.theolm.core.repository.MockWorkoutPlanRepo
 import com.theolm.gym_share.R
 import com.theolm.gym_share.presentation.ui.common.BottomSheetWrapper
 import com.theolm.gym_share.presentation.ui.common.RowIconButton
@@ -39,7 +38,7 @@ private fun PreviewLight() {
     PreviewThemeLight {
         HomePage(
             navigator = EmptyDestinationsNavigator,
-            viewModel = HomePageViewModel(MockWorkoutPlanRepo)
+            viewModel = HomePageViewModel.mock()
         )
     }
 }
@@ -50,7 +49,7 @@ private fun PreviewDark() {
     PreviewThemeDark {
         HomePage(
             navigator = EmptyDestinationsNavigator,
-            viewModel = HomePageViewModel(MockWorkoutPlanRepo)
+            viewModel = HomePageViewModel.mock()
         )
     }
 }

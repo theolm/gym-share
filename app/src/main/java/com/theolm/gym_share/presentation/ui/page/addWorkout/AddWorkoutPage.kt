@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
@@ -27,10 +26,8 @@ import com.ramcosta.composedestinations.result.EmptyResultRecipient
 import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
 import com.theolm.core.data.WorkoutPlan
-import com.theolm.core.repository.MockWorkoutPlanRepo
 import com.theolm.gym_share.R
 import com.theolm.gym_share.extensions.toAlphabetLetter
-import com.theolm.gym_share.presentation.ui.common.MockErrorHandler
 import com.theolm.gym_share.presentation.ui.components.DefTopBar
 import com.theolm.gym_share.presentation.ui.page.addWorkout.components.WorkoutSetRow
 import com.theolm.gym_share.presentation.ui.page.destinations.AddExercisePageDestination
@@ -44,7 +41,7 @@ private fun PreviewLight() {
     PreviewThemeLight {
         AddWorkoutPage(
             navigator = EmptyDestinationsNavigator,
-            viewModel = mockViewModel(),
+            viewModel = AddWorkoutViewModel.mock(),
             resultRecipient = EmptyResultRecipient(),
         )
     }
@@ -56,17 +53,11 @@ private fun PreviewDark() {
     PreviewThemeDark {
         AddWorkoutPage(
             navigator = EmptyDestinationsNavigator,
-            viewModel = mockViewModel(),
+            viewModel = AddWorkoutViewModel.mock(),
             resultRecipient = EmptyResultRecipient(),
         )
     }
 }
-
-fun mockViewModel() = AddWorkoutViewModel(
-    MockWorkoutPlanRepo,
-    MockErrorHandler(),
-    SavedStateHandle()
-)
 
 data class AddWorkoutPageNavArgs(val workoutPlan: WorkoutPlan? = null)
 

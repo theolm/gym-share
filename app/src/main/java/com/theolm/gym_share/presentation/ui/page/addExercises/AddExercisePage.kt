@@ -21,8 +21,6 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 import com.theolm.core.data.Exercise
 import com.theolm.core.data.WorkoutPlan
 import com.theolm.core.data.WorkoutSet
-import com.theolm.core.repository.MockWorkoutPlanRepo
-import com.theolm.gym_share.presentation.ui.common.MockErrorHandler
 import com.theolm.gym_share.presentation.ui.theme.PreviewThemeDark
 import com.theolm.gym_share.presentation.ui.theme.PreviewThemeLight
 
@@ -33,7 +31,7 @@ private fun PreviewLight() {
         AddExercisePage(
             navigator = EmptyDestinationsNavigator,
             resultBackNavigator = EmptyResultBackNavigator(),
-            viewModel = mockViewModel(),
+            viewModel = AddExerciseViewModel.mock(),
             workoutPlan = WorkoutPlan(title = "Teste"),
             workoutSet = WorkoutSet(),
         )
@@ -47,17 +45,12 @@ private fun PreviewDark() {
         AddExercisePage(
             navigator = EmptyDestinationsNavigator,
             resultBackNavigator = EmptyResultBackNavigator(),
-            viewModel = mockViewModel(),
+            viewModel = AddExerciseViewModel.mock(),
             workoutPlan = WorkoutPlan(title = "Teste"),
             workoutSet = WorkoutSet(),
         )
     }
 }
-
-private fun mockViewModel() = AddExerciseViewModel(
-    MockWorkoutPlanRepo,
-    MockErrorHandler(),
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
