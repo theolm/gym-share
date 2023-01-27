@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "GymShare"
 include(":app")
 include(":color")
+include(":core")

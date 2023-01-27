@@ -1,7 +1,7 @@
 package com.theolm.gym_share.data.di
 
-import com.theolm.gym_share.ui.common.ErrorHandler
-import com.theolm.gym_share.ui.common.ErrorHandlerImpl
+import com.theolm.gym_share.presentation.ui.common.ErrorHandler
+import com.theolm.gym_share.presentation.ui.common.ErrorHandlerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

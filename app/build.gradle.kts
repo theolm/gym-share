@@ -74,6 +74,7 @@ kotlin {
 
 dependencies {
     implementation(project(":color"))
+    implementation(project(":core"))
 
     implementation(Deps.coreKtx)
     implementation(Deps.appCompat)
@@ -96,7 +97,7 @@ dependencies {
     implementation(Deps.composeRuntime)
     implementation(Deps.composeLiveData)
     implementation(Deps.hiltAndroid)
-    implementation(Deps.hiltNacCompose)
+    implementation(Deps.hiltNavCompose)
     kapt(Deps.hiltCompiler)
 
     implementation(Deps.moshi)
