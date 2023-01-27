@@ -55,7 +55,7 @@ private fun PreviewDark() {
 }
 
 private fun mockViewModel() = AddExerciseViewModel(
-    MockWorkoutPlanRepo(),
+    MockWorkoutPlanRepo,
     MockErrorHandler(),
 )
 

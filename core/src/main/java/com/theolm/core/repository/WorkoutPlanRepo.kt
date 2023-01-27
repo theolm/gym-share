@@ -15,7 +15,7 @@ interface WorkoutPlanRepo {
     fun getAll(): Flow<List<WorkoutPlan>>
 }
 
-class WorkoutPlanRepoImpl @Inject constructor(
+internal class WorkoutPlanRepoImpl @Inject constructor(
     private val workoutDataSource: WorkoutDataSource
 ) : WorkoutPlanRepo {
     override suspend fun get(id: Int): WorkoutPlan {
@@ -42,7 +42,7 @@ class WorkoutPlanRepoImpl @Inject constructor(
     }
 }
 
-class MockWorkoutPlanRepo : WorkoutPlanRepo {
+object MockWorkoutPlanRepo : WorkoutPlanRepo {
     override suspend fun get(id: Int): WorkoutPlan = WorkoutPlan(title = "", setList = listOf())
     override suspend fun save(workoutPlan: WorkoutPlan) = Unit
     override suspend fun delete(workoutPlan: WorkoutPlan) = Unit

@@ -39,7 +39,7 @@ private fun PreviewLight() {
     PreviewThemeLight {
         HomePage(
             navigator = EmptyDestinationsNavigator,
-            viewModel = HomePageViewModel(MockWorkoutPlanRepo())
+            viewModel = HomePageViewModel(MockWorkoutPlanRepo)
         )
     }
 }
@@ -50,7 +50,7 @@ private fun PreviewDark() {
     PreviewThemeDark {
         HomePage(
             navigator = EmptyDestinationsNavigator,
-            viewModel = HomePageViewModel(MockWorkoutPlanRepo())
+            viewModel = HomePageViewModel(MockWorkoutPlanRepo)
         )
     }
 }
