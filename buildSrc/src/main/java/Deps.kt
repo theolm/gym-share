@@ -22,7 +22,7 @@ object Deps {
     val composeLiveData by lazy { "androidx.compose.runtime:runtime-livedata:${Versions.composeLiveData}" }
     val hiltAndroid by lazy { "com.google.dagger:hilt-android:${Versions.hilt}" }
     val hiltCompiler by lazy { "com.google.dagger:hilt-android-compiler:${Versions.hilt}" }
-    val hiltNacCompose by lazy { "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavCompose}" }
+    val hiltNavCompose by lazy { "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavCompose}" }
     val roomRuntime by lazy { "androidx.room:room-runtime:${Versions.room}" }
     val roomCompiler by lazy { "androidx.room:room-compiler:${Versions.room}" }
     val roomKtx by lazy { "androidx.room:room-ktx:${Versions.room}" }
@@ -34,4 +34,5 @@ object Deps {
     val composeUiTest by lazy { "androidx.compose.ui:ui-test-junit4" }
     val composeUiTooling by lazy { "androidx.compose.ui:ui-tooling" }
     val composeUiToolingPreview by lazy { "androidx.compose.ui:ui-tooling-preview" }
+    val junit by lazy { "junit:junit:${Versions.junit}" }
 }

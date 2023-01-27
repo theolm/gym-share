@@ -19,5 +19,6 @@ object Versions {
     const val moshi = "1.14.0"
     const val kspVersion = "1.7.20-1.0.8"
     const val composeDestination = "1.8.33-beta"
+    const val junit = "4.13.2"
 
 }
