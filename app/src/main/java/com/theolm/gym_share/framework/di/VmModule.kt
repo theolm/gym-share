@@ -1,4 +1,4 @@
-package com.theolm.gym_share.data.di
+package com.theolm.gym_share.framework.di
 
 import com.theolm.gym_share.presentation.ui.common.ErrorHandler
 import com.theolm.gym_share.presentation.ui.common.ErrorHandlerImpl

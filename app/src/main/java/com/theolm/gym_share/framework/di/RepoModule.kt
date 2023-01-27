@@ -1,9 +1,9 @@
-package com.theolm.gym_share.data.di
+package com.theolm.gym_share.framework.di
 
 import com.theolm.core.repository.WorkoutDataSource
 import com.theolm.core.repository.WorkoutPlanRepo
 import com.theolm.core.repository.WorkoutPlanRepoImpl
-import com.theolm.gym_share.data.database.StupidDB
+import com.theolm.gym_share.framework.database.StupidDB
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

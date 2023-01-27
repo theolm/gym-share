@@ -1,13 +1,13 @@
-package com.theolm.gym_share.data.di
+package com.theolm.gym_share.framework.di
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import androidx.room.Room
 import com.squareup.moshi.Moshi
-import com.theolm.gym_share.data.database.AppDatabase
-import com.theolm.gym_share.data.database.StupidDB
-import com.theolm.gym_share.data.database.StupidPref
-import com.theolm.gym_share.data.database.WorkoutPlanDao
+import com.theolm.gym_share.framework.database.AppDatabase
+import com.theolm.gym_share.framework.database.StupidDB
+import com.theolm.gym_share.framework.database.StupidPref
+import com.theolm.gym_share.framework.database.dao.WorkoutPlanDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
