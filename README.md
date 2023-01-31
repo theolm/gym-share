@@ -1,6 +1,6 @@
 # Gym Share
 
-Gym Share is an android application built with the intention of demonstrating the application of the following technologies:
+Gym Share is an android app built (still under development) with the intention of demonstrating the usage of the following technologies:
 
 * Clean Architecture
 * Multi-module Architecture
